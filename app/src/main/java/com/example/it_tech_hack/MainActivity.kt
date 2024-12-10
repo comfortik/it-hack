@@ -9,20 +9,44 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import com.example.hz.features.firebase.firebaseAuthWithEmail.FirebaseAuthWithEmailScreen
+import com.example.it_tech_hack.data.sources.SharedPrefsProvider
+import com.example.it_tech_hack.features.common.nav.CustomBottomBar
+import com.example.it_tech_hack.features.common.nav.NavigationGraph
+import com.example.it_tech_hack.features.common.nav.Routes
 import com.example.it_tech_hack.ui.theme.IttechhackTheme
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        SharedPrefsProvider.init(this)
+        val id: String? = SharedPrefsProvider.getSharedPrefs("USER_ID")
         setContent {
             IttechhackTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
+                val navController = rememberNavController()
+                val navBackStackEntry by navController.currentBackStackEntryAsState()
+                val currentRoute = navBackStackEntry?.destination?.route
+
+                val showBottomBar = currentRoute != Routes.Auth.route
+
+                Scaffold(
+                    modifier = Modifier.fillMaxSize(),
+                    bottomBar = {
+                        if (showBottomBar) {
+                            CustomBottomBar(navController = navController)
+                        }
+                    }
+                ) { innerPadding ->
+                    NavigationGraph(
+                        navController = navController,
+                        modifier = Modifier.padding(innerPadding),
+                        startDestination = if (id!=null) Routes.Main else Routes.Auth
                     )
                 }
             }
@@ -30,18 +54,3 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    IttechhackTheme {
-        Greeting("Android")
-    }
-}

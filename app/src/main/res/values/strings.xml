@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">it-tech-hack</string>
+    <string name="enter_email_and_password">Введите email и пароль</string>
+    <string name="enter_email">Введите email\n</string>
+    <string name="enter_password">Введите пароль\n</string>
+    <string name="sign_in">Войти\n</string>
 </resources>
