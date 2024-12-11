@@ -18,5 +18,10 @@ sealed class Routes(val route: String) {
             return "buyInvestment/$name/$price/$dif/$type"
         }
     }
+    data object SaleInvestment : Routes("buyInvestment/{name}/{price}") {
+        fun createRoute(name: String, price: Float): String {
+            return "buyInvestment/$name/$price"
+        }
+    }
 
 }

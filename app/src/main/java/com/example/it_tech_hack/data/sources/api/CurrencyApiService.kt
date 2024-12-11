@@ -11,7 +11,7 @@ import retrofit2.http.Query
 interface CurrencyApiService {
     @GET("/v3/historical")
     suspend fun getCurrencies(
-        @Query("apikey") apiKey: String = "cur_live_ccIQyzRNHGY97e8bzLgAJfFe8nql16TZSyucys0P",
+        @Query("apikey") apiKey: String = "cur_live_jqvbpxXOs1k39AyMGFsn8rVQQT18Q9l28DX2pGuY",
         @Query("base_currency") baseCurrency: String = "RUB",
         @Query("date") date: String? = null
     ): CurrencyDTO

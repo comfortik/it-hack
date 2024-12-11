@@ -5,6 +5,16 @@ sealed class InvestmentType(val type: Int){
     data object Currency: InvestmentType(1)
     data object Stocks: InvestmentType(2)
     data object Bonds: InvestmentType(3)
+    companion object {
+        fun fromInt(int: Int): InvestmentType =
+            when (int) {
+                1 -> Currency
+                2 -> Stocks
+                3 -> Bonds
+                4 -> Gold
+                else -> Currency  // Возвращаем Currency по умолчанию
+            }
+    }
 }
 
 fun InvestmentType.toScreenText(): String =
@@ -15,6 +25,8 @@ fun InvestmentType.toScreenText(): String =
         4->"Золото"
         else -> ""
     }
+
+
 
 val types = listOf(
     null,

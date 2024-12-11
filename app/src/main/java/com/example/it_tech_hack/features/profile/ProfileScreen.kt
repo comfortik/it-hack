@@ -26,6 +26,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun ProfileScreen(
     profileScreenViewModel: ProfileScreenViewModel = koinViewModel(),
+    onBriefcaseClick: ()->Unit
 ) {
     val state = profileScreenViewModel.screenState.collectAsState()
 
@@ -64,7 +65,7 @@ fun ProfileScreen(
                 cost = state.value.cost,
                 difference = state.value.difference,
                 percent = state.value.percent,
-                onClick = {}
+                onClick = {onBriefcaseClick()}
             )
             }
         )

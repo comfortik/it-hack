@@ -26,6 +26,7 @@ import org.koin.androidx.viewmodel.dsl.viewModelOf
 import com.example.it_tech_hack.features.mainScreen.MainScreenViewModel
 import com.example.it_tech_hack.features.market.MarketViewModel
 import com.example.it_tech_hack.features.profile.ProfileScreenViewModel
+import com.example.it_tech_hack.features.briefcase.BriefcaseViewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
@@ -62,6 +63,7 @@ val appModule = module {
     single<CurrencyRepository> {CurrencyRepositoryImpl(get(named("CurrencyApi"))) }
 
     viewModelOf(::MainScreenViewModel)
+    viewModelOf(::BriefcaseViewModel)
     viewModelOf(::ProfileScreenViewModel)
     viewModelOf(::MarketViewModel)
     viewModelOf(::FirebaseAuthWithEmailViewModel)

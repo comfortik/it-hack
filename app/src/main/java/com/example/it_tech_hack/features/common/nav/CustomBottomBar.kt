@@ -63,7 +63,7 @@ fun CustomBottomBar(navController: NavHostController) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(80.dp),
-                containerColor = Color.DarkGray,
+                containerColor = colorResource(R.color.light_gray),
                 contentColor = Color.White
             ) {
                 bottomBarItems.forEach { (route, icon) ->
@@ -89,7 +89,7 @@ fun CustomBottomBar(navController: NavHostController) {
         FloatingActionButton(
             onClick = { navController.navigate(Routes.Main.route) },
             shape = CircleShape,
-            containerColor = Color.Magenta,
+            containerColor = colorResource(R.color.light_gray),
             modifier = Modifier
                 .size(55.dp)
                 .align(Alignment.BottomCenter)
