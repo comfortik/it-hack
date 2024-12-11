@@ -66,12 +66,12 @@ fun FirebaseAuthWithEmailScreen(viewModel: FirebaseAuthWithEmailViewModel = koin
                     viewModel.processIntent(FirebaseAuthWithEmailIntent.SignIn)
                 }
                 is FirebaseAuthWithEmailAction.NavigateToProfile->{
-
+                    onSignIn()
                 }
             }
         }
     }
-    Scaffold (){
+    Scaffold {
         println(it)
         Column(
             modifier = Modifier

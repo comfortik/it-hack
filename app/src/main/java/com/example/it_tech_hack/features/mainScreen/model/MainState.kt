@@ -8,6 +8,7 @@ data class MainState(
     val cost: Double = 0.0,
     val difference: Double= 0.0,
     val percent: Double =0.0,
+    val userMoney: Double=0.0,
     val bestStock: StockInfo = StockInfo(
         name = "Reno",
         icon = R.drawable.ic_profile,

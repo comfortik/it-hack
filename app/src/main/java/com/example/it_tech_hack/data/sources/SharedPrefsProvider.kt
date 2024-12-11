@@ -6,11 +6,11 @@ import android.content.SharedPreferences
 object SharedPrefsProvider {
     lateinit var sharedPrefs : SharedPreferences
     fun init(context: Context){
-        sharedPrefs = context.getSharedPreferences(USER_ID, Context.MODE_PRIVATE)
+        sharedPrefs = context.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE)
     }
    inline fun <reified T> getSharedPrefs(id: String): T? {
         return when (T::class) {
-            String::class -> sharedPrefs.getString(id, "not found") as T
+            String::class -> sharedPrefs.getString(id, null) as T?
             Int::class -> sharedPrefs.getInt(id, 0) as T
             Boolean::class -> sharedPrefs.getBoolean(id, false) as T
             Float::class -> sharedPrefs.getFloat(id, 0f) as T
@@ -36,4 +36,4 @@ object SharedPrefsProvider {
 
 }
 
-const val USER_ID = "USER_ID"
+const val SHARED_PREFS = "SHARED_PREFS"
