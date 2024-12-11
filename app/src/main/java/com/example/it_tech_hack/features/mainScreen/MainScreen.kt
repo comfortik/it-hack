@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowRight
@@ -29,8 +31,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.it_tech_hack.R
+import com.example.it_tech_hack.domain.models.InvestmentType
 import com.example.it_tech_hack.features.common.CardItem
 import com.example.it_tech_hack.features.mainScreen.model.MainIntent
+import com.example.it_tech_hack.features.market.InvestmentCard
+import com.google.firebase.components.Lazy
 import org.koin.androidx.compose.koinViewModel
 
 
@@ -40,7 +45,7 @@ fun MainScreen (
     buySymbol: String? = null,
     type: Int? = null,
     onBriefcaseClicked: ()->Unit,
-    onMarketClicked: ()->Unit
+    onMarketClicked: ()->Unit,
 ){
 
 
@@ -73,8 +78,27 @@ fun MainScreen (
             },
             onClick = onMarketClicked
         )
+        Spacer(Modifier.weight(1f))
+        Text(
+            text = "Предложение дня",
+            style = MaterialTheme.typography.bodyLarge.copy(fontSize = 22.sp),
+            modifier = Modifier.padding(start = 8.dp)
+        )
+        Spacer(Modifier.height(12.dp))
+        LazyColumn {
+            items(state.value.bestStock.toList()) { item ->
+                InvestmentCard(
+                    symbol = item.first,
+                    price = item.second.first,
+                    dif = item.second.second - item.second.first,
+                    onCardClick = { name, price, dif ->
 
-
+                    }
+                )
+                Spacer(Modifier.height(12.dp))
+            }
+        }
+        Spacer(Modifier.weight(1f))
 
     }
 }
@@ -151,9 +175,10 @@ fun MyBriefcaseCard(
         Text(
             "Стоимость портфеля"
         )
+        val formattedCost = String.format("%.2f", cost)
         Text(
             modifier  = Modifier.padding(vertical = 12.dp),
-           text=  "₽ $cost",
+             text=  "₽ $formattedCost",
             style = MaterialTheme.typography.bodyLarge.copy(fontSize = 22.sp)
         )
         DifText(difference,percent )

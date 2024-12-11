@@ -51,8 +51,22 @@ class MainScreenViewModel(
                 )
             }
         }
+        viewModelScope.launch {
+            getBestStocks()
+        }
 
     }
+    private suspend fun getBestStocks() {
+        val currencyList = currencyRepository.getCurrencyList()
+
+        if (currencyList.isNotEmpty()) {
+
+            val bestStocks = currencyList.toList().filter{ it.second.second-it.second.first>0 }.shuffled().take(3)
+
+            _state.value = state.copy(bestStock = bestStocks)
+        }
+    }
+
 
     private suspend fun getBriefcaseCost() {
         getBriefcaseCostUseCase(

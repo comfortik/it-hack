@@ -25,6 +25,7 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -50,22 +51,22 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun FirebaseAuthWithEmailScreen(viewModel: FirebaseAuthWithEmailViewModel = koinViewModel(),
-                                onSignIn: ()->Unit
-                                ) {
+                                onSignIn: () -> Unit
+) {
     val state = viewModel.screenState.collectAsState()
     val context = LocalContext.current
     LaunchedEffect(key1 = viewModel) {
-        viewModel.action.collect{
-            when(it){
-                is FirebaseAuthWithEmailAction.ShowError->{
+        viewModel.action.collect {
+            when (it) {
+                is FirebaseAuthWithEmailAction.ShowError -> {
                     Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
                     Log.d("sd", it.message)
                 }
-                is FirebaseAuthWithEmailAction.SignIn->{
+                is FirebaseAuthWithEmailAction.SignIn -> {
                     Log.d("view", "signin")
                     viewModel.processIntent(FirebaseAuthWithEmailIntent.SignIn)
                 }
-                is FirebaseAuthWithEmailAction.NavigateToProfile->{
+                is FirebaseAuthWithEmailAction.NavigateToProfile -> {
                     onSignIn()
                 }
             }
@@ -83,53 +84,62 @@ fun FirebaseAuthWithEmailScreen(viewModel: FirebaseAuthWithEmailViewModel = koin
                     fontFamily = FontFamily.Monospace,
                     fontSize = 20.sp
                 ),
-                textAlign = TextAlign.Center ,
+                textAlign = TextAlign.Center,
                 modifier = Modifier.padding(16.dp)
             )
+
+            // Email field
             OutlinedTextField(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 12.dp)
-                    .background(Color.White, RoundedCornerShape(4.dp)),
+                    .background(Color.DarkGray, RoundedCornerShape(4.dp)),
                 placeholder = {
-                    Text(text = stringResource(id = R.string.enter_email),
+                    Text(
+                        text = stringResource(id = R.string.enter_email),
                         style = TextStyle(
                             fontFamily = FontFamily.Monospace,
-                            color = Color.LightGray)
+                            color = Color.Gray
+                        )
                     )
                 },
                 value = state.value.email,
-                textStyle = TextStyle(color = if(state.value.email.isEmpty())Color.Gray else Color.DarkGray,
-                    fontFamily = FontFamily.Monospace),
-                onValueChange = { viewModel.processIntent(FirebaseAuthWithEmailIntent.ChangeEmail(it))  },
+                textStyle = TextStyle(
+                    color = Color.White, // Цвет текста - белый
+                    fontFamily = FontFamily.Monospace
+                ),
+                onValueChange = { viewModel.processIntent(FirebaseAuthWithEmailIntent.ChangeEmail(it)) },
             )
 
-
-
+            // Password field
             OutlinedTextField(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 8.dp)
-                    .background(Color.White, RoundedCornerShape(4.dp)),
+                    .background(Color.DarkGray, RoundedCornerShape(4.dp)),
                 placeholder = {
-                    Text(text = stringResource(id = R.string.enter_password),
+                    Text(
+                        text = stringResource(id = R.string.enter_password),
                         style = TextStyle(
                             fontFamily = FontFamily.Monospace,
-                            color = Color.LightGray)
+                            color = Color.Gray
+                        )
                     )
                 },
                 value = state.value.password,
                 textStyle = TextStyle(
-                    color = Color.Gray,
+                    color = Color.White,
                     fontFamily = FontFamily.Monospace
                 ),
                 visualTransformation = PasswordVisualTransformation(),
                 onValueChange = { viewModel.processIntent(FirebaseAuthWithEmailIntent.ChangePassword(it)) },
             )
+
             Button(
                 onClick = { viewModel.processIntent(FirebaseAuthWithEmailIntent.Auth) },
                 modifier = Modifier
                     .fillMaxWidth()
+                    .align(Alignment.CenterHorizontally)
                     .padding(top = 12.dp),
                 shape = RoundedCornerShape(12.dp),
                 colors = ButtonDefaults.buttonColors(
@@ -137,7 +147,8 @@ fun FirebaseAuthWithEmailScreen(viewModel: FirebaseAuthWithEmailViewModel = koin
                     contentColor = Color.DarkGray
                 )
             ) {
-                Text(text = stringResource(id = R.string.sign_in),
+                Text(
+                    text = stringResource(id = R.string.sign_in),
                     style = TextStyle(
                         fontFamily = FontFamily.Monospace,
                         fontSize = 12.sp
@@ -146,9 +157,8 @@ fun FirebaseAuthWithEmailScreen(viewModel: FirebaseAuthWithEmailViewModel = koin
             }
         }
     }
-
-
 }
+
 
 
 

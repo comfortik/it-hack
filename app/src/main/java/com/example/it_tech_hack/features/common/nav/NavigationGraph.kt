@@ -22,7 +22,7 @@ fun NavigationGraph(navController: NavHostController, modifier: Modifier = Modif
     NavHost(navController = navController, startDestination = startDestination.route, modifier = modifier) {
         composable(Routes.Auth.route) {
             FirebaseAuthWithEmailScreen{
-                navController.navigate(Routes.Main.route)
+                navController.navigate(Routes.MainA.route)
             }
         }
         composable(Routes.Market.route) {
@@ -46,6 +46,11 @@ fun NavigationGraph(navController: NavHostController, modifier: Modifier = Modif
         composable(Routes.Profile.route) { ProfileScreen(){
             navController.navigate(Routes.Briefcase.route)
         } }
+        composable(Routes.MainA.route){
+            MainScreen(onBriefcaseClicked = {navController.navigate(Routes.Briefcase.route)},
+                onMarketClicked = {navController.navigate(Routes.Market.route)})
+        }
+
         composable(Routes.Briefcase.route) { BriefcaseScreen { name, price ->
                 navController.navigate(Routes.SaleInvestment.createRoute(name, price.toFloat()))
             } }
@@ -79,9 +84,14 @@ fun NavigationGraph(navController: NavHostController, modifier: Modifier = Modif
             val name = backStackEntry.arguments?.getString("name") ?: ""
             val price = backStackEntry.arguments?.getFloat("price") ?: 0f
 
-            SaleInvestmentDialog(name = name, price = price.toDouble()) {
-                navController.popBackStack()
-            }
+            SaleInvestmentDialog(name = name, price = price.toDouble(),
+                onConfirm = {symbol, price->
+                    navController.navigate(Routes.Main.createRoute(symbol, InvestmentType.Currency.type))
+                },
+                onDismiss = {
+                    navController.popBackStack()
+                }
+                )
         }
 
 
@@ -91,8 +101,7 @@ fun NavigationGraph(navController: NavHostController, modifier: Modifier = Modif
 }
 
 @Composable
-fun SaleInvestmentDialog(name: String, price: Double, onDismiss: () -> Unit) {
-    // Реализуем сам диалог
+fun SaleInvestmentDialog(name: String, price: Double, onConfirm:(String, Double)->Unit, onDismiss: () -> Unit) {
     androidx.compose.material3.AlertDialog(
         onDismissRequest = { onDismiss() },
         title = {
@@ -104,7 +113,7 @@ fun SaleInvestmentDialog(name: String, price: Double, onDismiss: () -> Unit) {
         confirmButton = {
             androidx.compose.material3.Button(
                 onClick = {
-                    onDismiss()
+                    onConfirm(name, price)
                 }
             ) {
                 Text("Удалить")

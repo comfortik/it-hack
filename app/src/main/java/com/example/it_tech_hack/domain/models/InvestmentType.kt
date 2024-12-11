@@ -12,7 +12,7 @@ sealed class InvestmentType(val type: Int){
                 2 -> Stocks
                 3 -> Bonds
                 4 -> Gold
-                else -> Currency  // Возвращаем Currency по умолчанию
+                else -> Currency
             }
     }
 }

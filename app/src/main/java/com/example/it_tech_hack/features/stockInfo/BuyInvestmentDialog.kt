@@ -47,7 +47,7 @@ fun BuyInvestmentDialog(
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color.DarkGray
                     )) {
-                    Text("Buy")
+                    Text("Купить")
                 }
 
             }

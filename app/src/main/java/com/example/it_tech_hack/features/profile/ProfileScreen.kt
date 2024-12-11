@@ -4,6 +4,8 @@ import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
@@ -19,6 +21,7 @@ import androidx.compose.ui.unit.sp
 import com.example.hz.common.BaseViewModel
 import com.example.it_tech_hack.features.common.CardItem
 import com.example.it_tech_hack.features.mainScreen.MyBriefcaseCard
+import com.example.it_tech_hack.features.market.InvestmentCard
 import com.example.it_tech_hack.features.profile.models.ProfileIntent
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -41,13 +44,13 @@ fun ProfileScreen(
             Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text("Profile", style = MaterialTheme.typography.headlineLarge)
+            Text("Профиль", style = MaterialTheme.typography.headlineLarge)
             Spacer(Modifier.weight(1f))
             Icon(
                 imageVector = Icons.Default.MoreVert,
                 contentDescription = "Settings",
                 modifier = Modifier
-                    .clickable { /* TODO: Show dropdown menu */ }
+                    .clickable { }
             )
         }
 
@@ -55,7 +58,8 @@ fun ProfileScreen(
         Row(
             Modifier.padding(vertical = 12.dp)
         ) {
-            Text("${state.value.userMoney}₽", style = MaterialTheme.typography.bodyLarge.copy(fontSize = 20.sp))
+            val formattedPercent = String.format("%.2f",state.value.userMoney)
+            Text("Доступно вам: $formattedPercent ₽", style = MaterialTheme.typography.bodyLarge.copy(fontSize = 20.sp))
         }
 
         CardItem(
@@ -81,20 +85,24 @@ fun ProfileScreen(
                 .padding(16.dp),
             contentAlignment = Alignment.Center
         ) {
-            Text("Add 0.5 ₽", color = Color.White)
+            Text("Получить 0.5 ₽", color = Color.White)
         }
 
-        Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.weight(1f))
 
-        if (state.value.isLoading) {
-            CircularProgressIndicator()
-        } else {
-            Text("Top 3 Stocks", style = MaterialTheme.typography.bodyLarge.copy(fontSize = 20.sp))
-            Spacer(Modifier.height(8.dp))
-            state.value.topStocks.forEach { stock ->
-                Text(stock, style = MaterialTheme.typography.bodyLarge)
-                Spacer(Modifier.height(4.dp))
+        LazyColumn {
+            items(state.value.bestStock.toList()) { item ->
+                InvestmentCard(
+                    symbol = item.first,
+                    price = item.second.first,
+                    dif = item.second.second - item.second.first,
+                    onCardClick = { name, price, dif ->
+
+                    }
+                )
+                Spacer(Modifier.height(12.dp))
             }
         }
+        Spacer(Modifier.weight(1f))
     }
 }

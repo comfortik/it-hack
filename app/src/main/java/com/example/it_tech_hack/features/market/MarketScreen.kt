@@ -349,7 +349,7 @@ private fun CurrencyColumn(list: List<Pair<String, Pair<Double, Double>>>, onCar
 }
 
 @Composable
-private fun InvestmentCard(
+fun InvestmentCard(
     symbol: String="USD",
     price: Double = 12.2,
     dif: Double = 2.0,

@@ -5,25 +5,36 @@ import androidx.lifecycle.viewModelScope
 import com.example.hz.common.BaseAction
 import com.example.hz.common.BaseIntent
 import com.example.hz.common.BaseViewModel
+import com.example.it_tech_hack.domain.repositories.CurrencyRepository
 import com.example.it_tech_hack.domain.repositories.UserRepository
 import com.example.it_tech_hack.domain.useCases.GetBriefcaseCostUseCase
 import com.example.it_tech_hack.features.profile.models.ProfileIntent
 import com.example.it_tech_hack.features.profile.models.ProfileState
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 
 class ProfileScreenViewModel(
     private val userRepository: UserRepository,
-    private val getBriefcaseCostUseCase: GetBriefcaseCostUseCase
+    private val getBriefcaseCostUseCase: GetBriefcaseCostUseCase,
+    private val currencyRepository: CurrencyRepository
 ) : BaseViewModel<ProfileState, BaseAction, ProfileIntent>() {
 
     override fun createInitialState(): ProfileState = ProfileState()
 
     override fun handleIntent(intent: ProfileIntent) {
-        Log.d("inent", intent.toString())
         when (intent) {
             is ProfileIntent.IncrementMoney -> incrementUserMoney()
             is ProfileIntent.LoadTopStocks -> loadTopStocks()
+        }
+    }
+    private suspend fun getBestStocks() {
+        val currencyList = currencyRepository.getCurrencyList()
+
+        if (currencyList.isNotEmpty()) {
+
+            val bestStocks = currencyList.toList().filter{ it.second.second-it.second.first>0 }.shuffled().take(3)
+
+
+            _state.value = state.copy(bestStock = bestStocks)
         }
     }
 
@@ -57,6 +68,9 @@ class ProfileScreenViewModel(
                     userMoney = it?.money?:12.0
                 )
             }
+        }
+        viewModelScope.launch {
+            getBestStocks()
         }
 
 

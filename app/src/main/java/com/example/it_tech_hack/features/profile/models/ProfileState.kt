@@ -8,5 +8,6 @@ data class ProfileState(
     val percent: Double =0.0,
     val userMoney: Double = 0.0,
     val topStocks: List<String> = emptyList(),
-    val isLoading: Boolean = true
+    val isLoading: Boolean = true,
+    val bestStock: List<Pair<String, Pair<Double, Double>>> = listOf()
 ): BaseState

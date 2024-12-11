@@ -87,7 +87,7 @@ fun CustomBottomBar(navController: NavHostController) {
             }
         }
         FloatingActionButton(
-            onClick = { navController.navigate(Routes.Main.route) },
+            onClick = { navController.navigate(Routes.MainA.route) },
             shape = CircleShape,
             containerColor = colorResource(R.color.light_gray),
             modifier = Modifier

@@ -7,6 +7,7 @@ sealed class Routes(val route: String) {
             return "main/$symbol/$type"
         }
     }
+    data object MainA: Routes("main")
 
     data object Profile : Routes("profile")
     data object Briefcase : Routes("briefcase")

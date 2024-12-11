@@ -37,7 +37,7 @@ class UserRepositoryImpl(
 
 
     override suspend fun addUser(user: User) {
-        supabase.from(USER_TABLE_NAME).insert(User(
+        supabase.from(USER_TABLE_NAME).upsert(User(
             id = user.id,
             money = 5.0
         ))
